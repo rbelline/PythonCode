@@ -1,0 +1,3 @@
+# Coordinates
+This Python script resolve the issue to associate the city, address names to coordinates obtained from vehicles of a transportation company.
+Each coordinate is recorder any time the vehicle stop moving and start to operate. At that point the necessity to know the city and the street address as well as the distances in km between each stops
