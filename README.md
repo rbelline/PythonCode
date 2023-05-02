@@ -1,3 +1,2 @@
 # PythonCode
-In this section I place all the data analysis/engineer elaboration with Python on a various range of data. Those elaborations are part of bigger data engineering projects and they include data exploration, data cleaning, calculations and visualizations.
-I hope you can find good value inside and inspire to grow in the world of big data.
+In this section, I present overall data analysis/development using Python for a range of data. These elaborations are part of larger data engineering projects and include data exploration, data cleaning, calculations and visualizations. I hope you can find good use in them and get inspired to grow in the world of Big Data.
