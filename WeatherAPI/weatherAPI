@@ -1,0 +1,71 @@
+import urllib3
+import pandas as pd
+import json
+from datetime import datetime
+from urllib3 import request
+from pandas.io.json import json_normalize
+from urllib.parse import urlparse, urlencode
+import requests
+import uuid
+import pandas as pd
+pd.options.mode.chained_assignment = None  # default='warn'
+from pathlib import Path
+
+api_key = "606b8ba58d004d52a5383431240302"
+endpoint = "https://api.weatherapi.com/v1/current.json?key="
+#create api object
+locations = ['London', 'Bologna', 'Argelato', 'Kyoto', 'Shanghai', 'Los Angeles', 'Osaka']
+results = []
+for location in locations:
+    url = 'https://api.weatherapi.com/v1/current.json?key=606b8ba58d004d52a5383431240302&q='+ location + '&aqi=yes&alerts=yes'
+    response = requests.get(url)
+    results.append(response.json())
+    #creare uuid per ogni riga uuid.uuid4()
+   #print(results)
+
+#normalize json, create data frame and create csv
+df = pd.json_normalize(results)
+
+my_file = Path('test.csv')
+
+if my_file.exists():
+  df.to_csv('test.csv',mode='a', header=False)
+else:
+  df.to_csv('test.csv', header=True)
+
+all_data = pd.read_csv('test.csv')
+all_data['location.localtime'] = pd.to_datetime(all_data['location.localtime'])
+all_data['current.last_updated'] = pd.to_datetime(all_data['current.last_updated'])
+
+all_data = all_data.drop_duplicates().reset_index(drop=True)
+all_data['weather_id'] = all_data.index
+all_data
+
+all_data['location.localtime'] = pd.to_datetime(all_data['location.localtime'])
+all_data['current.last_updated'] = pd.to_datetime(all_data['current.last_updated'])
+
+location_dim = all_data[['location.name', 'location.region', 'location.country', 'location.lat','location.lon','location.tz_id']].drop_duplicates().reset_index(drop=True)
+location_dim['location_id'] = location_dim.index
+location_dim = location_dim[['location_id', 'location.name', 'location.region', 'location.country', 'location.lat','location.lon','location.tz_id']]
+location_dim['location.name'] = location_dim['location.name'].astype('string')
+location_dim['location.region'] = location_dim['location.region'].astype('string')
+location_dim['location.country'] = location_dim['location.country'].astype('string')
+location_dim['location.tz_id'] = location_dim['location.tz_id'].astype('string')
+location_dim.rename(columns={'location_id': 'location_id', 'location.name' : 'name', 'location.region':'region', 'location.country':'country', 'location.lat':'latitude','location.lon':'longitude','location.tz_id':'time zone'}, inplace=True)
+location_dim
+#location_dim.to_csv('location_dim.csv')
+
+datetime_dim = all_data[['location.localtime','current.last_updated']].drop_duplicates().reset_index(drop=True)
+datetime_dim['datetime_id'] = datetime_dim.index
+datetime_dim['date'] = datetime_dim['location.localtime'].dt.date
+datetime_dim['year'] = datetime_dim['location.localtime'].dt.year
+datetime_dim['month'] = datetime_dim['location.localtime'].dt.month
+datetime_dim['day'] = datetime_dim['location.localtime'].dt.day
+datetime_dim['hour'] = datetime_dim['location.localtime'].dt.hour
+datetime_dim['minute'] = datetime_dim['location.localtime'].dt.minute
+datetime_dim['second'] = datetime_dim['location.localtime'].dt.second
+datetime_dim = datetime_dim[['datetime_id', 'location.localtime', 'current.last_updated','date', 'year', 'month', 'day','hour', 'minute', 'second']]
+datetime_dim.rename(columns={'datetime_id':'datetime_id', 'location.localtime': 'localtime', 'current.last_updated': 'last_updated','date':'date', 'year':'year', 'month':'month', 'day':'day', 'hour':'hour', 'minute':'minute','sencond':'second'}, inplace=True)
+datetime_dim['date'] = datetime_dim['date'].astype('string')
+datetime_dim.info()
+datetime_dim
