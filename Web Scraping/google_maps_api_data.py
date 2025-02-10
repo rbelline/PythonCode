@@ -2,7 +2,7 @@ import requests
 import json
 import csv
 
-API_KEY = 'AIzaSyBrffTXPtxCbvDjSq5X0HToGjNlohTSHSs' #geocoding API key
+API_KEY = '' #geocoding API key
 # Search parameters
 search_query = "American Hospital Nad Al Sheba Clinic" #"clinic OR hospital OR doctor OR GP OR general physician"
 location = "25.20302751881149, 55.27371932212987" #"25.20302751881149, 55.27371932212987"  # Dubai's latitude, longitude
