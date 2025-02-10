@@ -2,11 +2,11 @@ import requests
 import json
 import csv
 
-API_KEY = 'AIzaSyBrffTXPtxCbvDjSq5X0HToGjNlohTSHSs' #geocoding API key
+API_KEY = '' #geocoding API key
 # Search parameters
-search_query = "American Hospital Nad Al Sheba Clinic" #"clinic OR hospital OR doctor OR GP OR general physician"
+search_query = "Medcare Royal Speciality Hospital" #"clinic OR hospital OR doctor OR GP OR general physician"
 location = "25.20302751881149, 55.27371932212987" #"25.20302751881149, 55.27371932212987"  # Dubai's latitude, longitude
-radius = 20000  # 10 km radius
+radius = 30000  # 10 km radius
 places_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
@@ -56,8 +56,8 @@ if response.get("status") == "OK":
             if "adr_address" in place_details:
                 # Extract building name from adr_address if available
                 adr_address = place_details.get("adr_address", "N/A")
-                adr_parts = adr_address.split(" - ")
-                building_name = adr_parts[0]
+                if '<span class="street-address">' in adr_address:
+                    building_name = adr_address.split('<span class="street-address">')[1].split('</span>')[0]
             
             # Extract address components to find the locality and area
             address_components = place_details.get("address_components", [])
@@ -96,7 +96,7 @@ if response.get("status") == "OK":
         # Print extracted information with proper encoding
         place_data = {
             "name": name,
-            "formatted_address": formatted_address,
+            "address": formatted_address,
             "place_id": place_id,
             "building": building_name,
             "lat": lat,
