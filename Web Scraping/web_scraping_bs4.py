@@ -1,8 +1,3 @@
-#!mamba install pandas==1.3.3 -y
-#!mamba install requests==2.26.0 -y
-!mamba install bs4==4.10.0 -y
-!mamba install html5lib==1.1 -y
-
 from bs4 import BeautifulSoup
 import html5lib
 import requests
