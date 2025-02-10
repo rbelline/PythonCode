@@ -4,7 +4,7 @@ import csv
 
 API_KEY = '' #geocoding API key
 # Search parameters
-search_query = "American Hospital Nad Al Sheba Clinic" #"clinic OR hospital OR doctor OR GP OR general physician"
+search_query = "" #"clinic OR hospital OR doctor OR GP OR general physician"
 location = "25.20302751881149, 55.27371932212987" #"25.20302751881149, 55.27371932212987"  # Dubai's latitude, longitude
 radius = 20000  # 10 km radius
 places_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
