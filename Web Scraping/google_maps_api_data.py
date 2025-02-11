@@ -1,8 +1,12 @@
 import requests
 import json
 import csv
+import configparser
 
-API_KEY = '' #geocoding API key
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+API_KEY = config["API"]["API_KEY"]
 # Search parameters
 search_query = "Medcare Royal Speciality Hospital" #"clinic OR hospital OR doctor OR GP OR general physician"
 location = "25.20302751881149, 55.27371932212987" #"25.20302751881149, 55.27371932212987"  # Dubai's latitude, longitude
